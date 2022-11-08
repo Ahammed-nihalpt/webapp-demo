@@ -1,0 +1,194 @@
+<%- include('../partials/adminPartials/adminHeader.ejs')  %>
+<!-- <link rel="stylesheet" href="./css/signup.css" type="text/css"> -->
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+      <div class="row justify-content-center align-items-center h-100">
+        <div class="col-12 col-lg-9 col-xl-7">
+          <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+            <div class="card-body p-4 p-md-5">
+              <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Edit</h3>
+              <% data.forEach(dat =>{ %>
+              <form action="/home/admin/users/edit/<%= dat._id %> " method="post" id="form" name="form">
+                <div class="row">
+                  <div class="col-md-6 mb-4">
+                    
+                    <div class="form-outline">
+                      <input type="text" id="firstName" name="firstName" class="form-control form-control-lg" value="<%= dat.first_name %>" />
+                      <label class="form-label" for="firstName">First Name</label>
+                    </div>
+  
+                  </div>
+                  <div class="col-md-6 mb-4">
+  
+                    <div class="form-outline">
+                      <input type="text" id="lastName" name="lastName" class="form-control form-control-lg" value="<%= dat.last_name %>"/>
+                      <label class="form-label" for="lastName">Last Name</label>
+                    </div>
+  
+                  </div>
+                </div>
+  
+                <div class="row">
+                  <div class="col-md-6 mb-4 d-flex align-items-center">
+  
+                    <div class="form-outline datepicker w-100">
+                      <input type="date" class="form-control form-control-lg" id="birthdayDate" name="dob" value="<%= dat.dob %>"/>
+                      <label for="birthdayDate" class="form-label">Birthday</label>
+                    </div>
+  
+                  </div>
+                  <div class="col-md-6 mb-4">
+  
+                    <h6 class="mb-2 pb-1">Gender: </h6> 
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="gender" id="femaleGender"
+                        value="female" <%= dat.gender == 'male' ? 'checked' : ''%>/>
+                      <label class="form-check-label" for="femaleGender">Female</label>
+                    </div>
+  
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="gender" id="maleGender"
+                        value="male" <%= dat.gender == 'male' ? 'checked' : ''%>/>
+                      <label class="form-check-label" for="maleGender">Male</label>
+                    </div>
+  
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="gender" id="otherGender"
+                        value="other" <%= dat.gender == 'other' ? 'checked' : ''%>/>
+                      <label class="form-check-label" for="otherGender">Other</label>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="row">
+                  <div class="col-md-6 mb-4 pb-2">
+  
+                    <div class="form-outline">
+                      <input type="email" id="emailAddress" name="email" class="form-control form-control-lg" value="<%= dat.email %>" disabled/>
+                      <label class="form-label" for="emailAddress">Email</label>
+                    </div>
+  
+                  </div>
+                  <div class="col-md-6 mb-4 pb-2">
+  
+                    <div class="form-outline">
+                      <input type="tel" id="phoneNumber" name="phoneNumber" class="form-control form-control-lg" value="<%= dat.phone %>"/>
+                      <label class="form-label" for="phoneNumber">Phone Number</label>
+                    </div>
+  
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-4 pb-2">
+  
+                    <div class="form-outline">
+                      <input type="password" id="password" name="password" class="form-control form-control-lg" value="<%= dat.password %> " disabled/>
+                      <label class="form-label" for="emailAddress">Password</label>
+                      <br>
+                      <input type="checkbox" onclick="myFunction()">Show Password
+                    </div>
+  
+                  </div>
+                  </div>
+                <div class="row">
+                  <div class="col-12">
+  
+                    <select class="select form-control-lg" id="Qulification" name="qualification">
+                      <option value="1" disabled>Choose option</option>
+                      <option value="Student" <%= dat.qulification == 'Student' ? 'selected' : ''%>>Student</option>
+                      <option value="Fresher" <%= dat.qulification == 'Fresher' ? 'selected' : ''%>>Fresher</option>
+                      <option value="Employee" <%= dat.qulification == 'Employee' ? 'selected' : ''%>>Employee</option>
+                    </select>
+                    <label class="form-label select-label">Qualification</label>
+  
+                  </div>
+                </div>
+                <div class="mt-4 pt-2">
+                  <input class="btn btn-primary btn-lg" type="submit" value="Edit" />
+                </div>
+              </form>
+              <%})%>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+<!-- <script src="./JS/signUp.js"></script> -->
+<%- include('../partials/adminPartials/adminFooter.ejs')  %>
+
+<script>
+
+const form = document.getElementById('form');
+
+form.addEventListener("submit", (event) => {
+  console.log("helo");
+  var flag = 0;
+  flag = validateInputs();
+  if (flag == 1) {
+    event.preventDefault();
+  }
+});
+
+function onlyLetters(str) {
+  return /^[a-zA-Z]+$/.test(str);
+}
+
+function validateInputs() {
+  const firstName = document.getElementById("firstName").value;
+  const lastName = document.getElementById("lastName").value;
+  const dob = document.getElementById("birthdayDate").value;
+  const phoneNumber = Number(document.getElementById("phoneNumber").value);
+  if (
+    firstName.length == 0 ||
+    lastName.length == 0 ||
+    phoneNumber.toString().length == 0
+  ) {
+    alert("Enter data in all fields");
+    return 1;
+  } else {
+    const age = calage(dob);
+    if (!onlyLetters(firstName)) {
+      alert("First name should only contain LETTERS");
+      return 1;
+    } else if (!onlyLetters(lastName)) {
+      alert("Last name should only contain LETTERS");
+      return 1;
+    } else if (age < 12 || age > 100) {
+      alert("invalid date of birth");
+      return 1;
+    } else if (phoneNumber.toString().length != 10 || isNaN(phoneNumber)) {
+      alert("enter valid phone number");
+      return 1;
+    } else if (password.length < 8) {
+      alert("Password length must be atleast 8 characters");
+      return 1;
+    } else if (password.length > 15) {
+      alert("Password length must not exceed 15 characters");
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+}
+
+function calage(dob) {
+  var dobcal = new Date(dob);
+  var month_diff = Date.now() - dobcal.getTime();
+  var age_dt = new Date(month_diff);
+  var year = age_dt.getUTCFullYear();
+  var age = Math.abs(year - 1970);
+  return age;
+}
+
+function myFunction() {
+  var x = document.getElementById("password");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+
+</script>
